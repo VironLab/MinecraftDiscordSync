@@ -113,7 +113,9 @@ void setNewProviderExample() {
 ---
 
 ## Maven Repository for the API:
+
 ```xml
+
 <repository>
     <id>vironlab-repo</id>
 	<url>https://repo.vironlab.eu/repository/snapshot/</url>
@@ -124,7 +126,26 @@ void setNewProviderExample() {
 	<artifactId>MinecraftDiscordSync-API</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 </dependency>
+
 ```
+
+### Gradle:
+
+```groovy
+
+repositories {
+    maven {
+        url "https://repo.vironlab.eu/repository/snapshot"
+    } 
+}
+
+dependencies {
+    compileOnly 'eu.vironlab.minecraft.mds:MinecraftDiscordSync-API:1.0.0-SNAPSHOT'
+}
+
+
+```
+
 ---
 
 <div align="center">
