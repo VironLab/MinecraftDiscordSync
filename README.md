@@ -114,7 +114,16 @@ void setNewProviderExample() {
 
 ## Maven Repository for the API:
 ```xml
-<!-- WILL BE ADDED SOON -->
+<repository>
+    <id>vironlab-repo</id>
+	<url>https://repo.vironlab.eu/repository/snapshot/</url>
+</repository>
+
+<dependency>
+	<groupId>eu.vironlab.minecraft.mds</groupId>
+	<artifactId>MinecraftDiscordSync-API</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+</dependency>
 ```
 ---
 

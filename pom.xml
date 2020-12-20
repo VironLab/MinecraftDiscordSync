@@ -11,6 +11,25 @@
 	<name>MinecraftDiscordSync</name>
 
 	<description>MinecraftDiscordSync allow you to sync minecraft servers with your discord server.</description>
+	
+	<licenses>
+		<license>
+			<name>General Public License (GPL v3.0)</name>
+			<url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
+		</license>
+	</licenses>
+
+	<issueManagement>
+		<system>GitHub Issue Tracker</system>
+		<url>https://github.com/VironLab/VironLab/issues</url>
+	</issueManagement>
+	
+	<distributionManagement>
+		<snapshotRepository>
+			<id>vironlab-repo</id>
+			<url>https://repo.vironlab.eu/repository/snapshot/</url>
+		</snapshotRepository>
+	</distributionManagement>
 		
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,4 +43,5 @@
 		<module>MinecraftDiscordSync-Nukkit</module>
 		<module>MinecraftDiscordSync-Bukkit</module>
 	</modules>
+	
 </project>

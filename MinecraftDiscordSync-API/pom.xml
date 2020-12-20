@@ -10,6 +10,10 @@
 	</parent>
 	<artifactId>MinecraftDiscordSync-API</artifactId>
 
+	<properties>
+		<maven.deploy.skip>false</maven.deploy.skip>
+	</properties>
+
 	<repositories>
 		<repository>
 			<id>jcenter</id>
@@ -67,6 +71,18 @@
 		<defaultGoal>install</defaultGoal>
 		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
