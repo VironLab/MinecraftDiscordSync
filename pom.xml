@@ -42,6 +42,7 @@
 		<module>MinecraftDiscordSync-API</module>
 		<module>MinecraftDiscordSync-Nukkit</module>
 		<module>MinecraftDiscordSync-Bukkit</module>
+		<module>MinecraftDiscordSync-Bungee</module>
 	</modules>
 	
 </project>
