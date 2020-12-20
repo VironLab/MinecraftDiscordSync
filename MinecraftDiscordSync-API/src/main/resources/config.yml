@@ -1,0 +1,170 @@
+# DONT change yourself
+config-version: 1
+
+#
+#   Copyright © 2020 | vironlab.eu | All Rights Reserved.
+#
+#      ___    _______                        ______         ______  
+#      __ |  / /___(_)______________ _______ ___  / ______ ____  /_ 
+#      __ | / / __  / __  ___/_  __ \__  __ \__  /  _  __ `/__  __ \
+#      __ |/ /  _  /  _  /    / /_/ /_  / / /_  /___/ /_/ / _  /_/ /
+#      _____/   /_/   /_/     \____/ /_/ /_/ /_____/\__,_/  /_.___/ 
+#                                                             
+#    ____  _______     _______ _     ___  ____  __  __ _____ _   _ _____ 
+#   |  _ \| ____\ \   / / ____| |   / _ \|  _ \|  \/  | ____| \ | |_   _|
+#   | | | |  _|  \ \ / /|  _| | |  | | | | |_) | |\/| |  _| |  \| | | |  
+#   | |_| | |___  \ V / | |___| |__| |_| |  __/| |  | | |___| |\  | | |  
+#   |____/|_____|  \_/  |_____|_____\___/|_|   |_|  |_|_____|_| \_| |_|  
+# 
+# 
+#                                                         
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# 
+#   Contact:
+# 
+#     Discordserver:   https://discord.gg/wvcX92VyEH
+#     Website:         https://vironlab.eu/ 
+#     Mail:            contact@vironlab.eu
+# 
+
+
+##### How to create a discord bot? #####
+# 1. Visit https://discord.com/developers
+# 2. Go to applications and create a new application
+# 3. Go to the application overview and navigate to the tab Bot 
+# 4. press Create Bot and follow all positive steps
+# 5. when the bot is created enable all "provoleged gateway Intents"
+# 6. copy the token and paste it to the bot.token configuration section
+##### How to create a discord bot ? #####
+
+##### Invite the bot to your server #####
+# Paste this link into your browser and replace the {{ID}} with your application ID wich you will find at the application overview
+# Link: https://discord.com/api/oauth2/authorize?client_id={{ID}}&permissions=8&scope=bot
+##### Invite the bot to your server #####
+
+discord_invitelink: 'https://discord.gg/wvcX92VyEH'
+
+# bot specific settings
+bot: 
+  token: 'paste token here' # paste the token received from the discord developer portal here.
+  prefix: '/' # this is the command prefix for your new bot.
+  activity:
+    type: 'WATCHING' # available: PLAYING / LISTENING / STREAMING / WATCHING
+    message: 'https://vironlab.eu' # this is the message displayed in the game status.
+    status: 'online' # available: online / offline / dnd / idle
+    
+plugin:
+  colored_prefix: '&2Minecraft&3Discord&6Sync'
+  prefix: 'MinecraftDiscordSync'
+  enable_playerevents: true # should the sync channel receive join/leave/death messages?
+  enable_discord_memberevents: true # should the member join and leave event broadcast messages ingame?
+  commands_enabled:
+    discord: # enable / disable discord commands
+      serverinfo: true
+      playerlist: true
+      online: true
+      verify: true
+    ingame: # enable / disable ingame commands
+      discord: true
+      discordinfo: true
+      verify: true
+  providers:
+    permission_provider: 'LUCKPERMS' # available in Nukkit: LUCKPERMS/MULTIPASS Bukkit: LUCKPERMS/VAULT
+    storage_provider: 'YAML'         # available YAML/MONGODB ( If youre using a database provide the credentials below )
+  database:
+    host: 'localhost'
+    port: 27017
+    username: 'admin'
+    password: 'secret_strong_password'
+    database: 'databaseName'
+    
+
+
+chatsync:
+  ingame_to_discord: true # should ingame messages be sent to discordchannel
+  discord_to_ingame: true # should the discord messages be sent in ingamechat
+    
+guild: # ( guild = Discord Server ) 
+  id: 'guild to sync ID' # paste yor guildID here ( you can copy it by enabling the developer mode in discord )
+  chatchannel_id: 'ChatChannel ID' # paste the id of the channel for the crosschat here.
+
+
+onlinecounter:
+  enabled: false # should the onlone counter be enabled
+  counterchannel: 'CounterChannel ID' # paste the id of the channel for the OnlineCounter here.
+  # this is the title of the online counter channel. Placeholders: 
+  # - %online%  - will be replaced with the online player count
+  # - %maxonline%  - will be replaced with the maximal possible online player count
+  channel_name: '(%online%/%maxonline%) Players Online'
+ 
+ 
+format:
+  use_embeds: true
+  embedcolor_randomized: true
+  # Placeholders: 
+  # - %pluginprefix%  - will be replaced with the set plugin.prefix
+  # - %playername%  - will be replaced with the author name
+  # - %message%  - will be replaced with the sent message
+  ingamechat: '[%pluginprefix%&r] &a%playername% &6» &e%message%'
+  discordchat: '[%pluginprefix%] » %playername% » %message%'
+  # Placeholders: 
+  # - %die_cause%  - will be replaced with the killer
+  event_playerdeath: '%playername% was killed by %die_cause%'
+  die_cause_undefined: 'Magic' # will be set as killer when killer is not resolveable
+  event_playerjoin: '%playername% Joined the Minecraft Server'
+  event_playerquit: '%playername% Left the Minecraft Server'
+  # Placeholders: 
+  # - %username%  - will be replaced with the username
+  # - %discriminator%  - will be replaced with the user discriminator ( 4 digit user id code thing )
+  # - %servername%  - will be replaced with the server name
+  memberjoin_discordserver: '&a%username%#%discriminator% joined the Discordserver &e%servername%'
+  memberremove_discordserver: '&c%username%#%discriminator% left the Discordserver &e%servername%'
+  
+  
+embed:
+  colors: # all colors are HEX codes wich you can generate by a colorpicker
+    messages: '#ffe020'
+    player_join: '#00ff00'
+    player_death: '#ff0000'
+    player_left: '#ff0000'
+ 
+ 
+verification:
+  # groupname:
+  #   includes: 
+  #     - 'other_groupname'
+  #   roles:
+  #     - 'role groupname ID'
+  admin:
+    includes: 
+      - 'developer'
+    roles:
+      - 'role ID admin'
+  developer:
+    roles:
+      - 'role ID developer'
+  premium:
+    includes: 
+      - 'default'
+    roles:
+      - 'role ID premium'
+  default:
+    roles:
+      - 'role ID default'
+  
+
+
+
+
+
