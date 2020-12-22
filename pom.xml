@@ -43,6 +43,7 @@
 		<module>MinecraftDiscordSync-Nukkit</module>
 		<module>MinecraftDiscordSync-Bukkit</module>
 		<module>MinecraftDiscordSync-Bungee</module>
+		<module>MinecraftDiscordSync-Velocity</module>
 	</modules>
 	
 </project>

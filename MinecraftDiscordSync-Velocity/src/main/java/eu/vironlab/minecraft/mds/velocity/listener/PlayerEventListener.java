@@ -35,25 +35,25 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds.bungee.listener;
+package eu.vironlab.minecraft.mds.velocity.listener;
 
 import java.awt.Color;
 
-import eu.vironlab.minecraft.mds.bungee.BungeeMinecraftDiscordSync;
+import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.connection.DisconnectEvent;
+import com.velocitypowered.api.event.connection.LoginEvent;
+
+import eu.vironlab.minecraft.mds.velocity.ChatColor;
+import eu.vironlab.minecraft.mds.velocity.VelocityMinecraftDiscordSync;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.event.ServerConnectEvent;
-import net.md_5.bungee.api.event.ServerDisconnectEvent;
-import net.md_5.bungee.api.plugin.Listener;
-import net.md_5.bungee.event.EventHandler;
 
-public class PlayerEventListener implements Listener {
+public class PlayerEventListener {
 	
-	@EventHandler
-	public void onEvent(ServerConnectEvent event) {
+	@Subscribe
+	public void onEvent(LoginEvent event) {
 		if(event == null) return;
-		if(!BungeeMinecraftDiscordSync.getInstance().getConfig().getBoolean("plugin.enable_playerevents", false)) return;
+		if(!VelocityMinecraftDiscordSync.getInstance().getConfig().getBoolean("plugin.enable_playerevents", false)) return;
 		
 		TextChannel chatChannel = null;
 		try {
@@ -61,11 +61,11 @@ public class PlayerEventListener implements Listener {
 		} catch(Exception e) {}
 		if(chatChannel == null) return;
 		
-		boolean useEmbed = BungeeMinecraftDiscordSync.getInstance().getConfig().getBoolean("format.use_embeds", false);
-		String messageFormat = BungeeMinecraftDiscordSync.getInstance().getConfig().getString("format.event_playerjoin", "%playername% Joined the Minecraft Server");
-		String pluginPrefix = BungeeMinecraftDiscordSync.getInstance().getConfig().getString("plugin.prefix", "MinecraftDiscordSync");
+		boolean useEmbed = VelocityMinecraftDiscordSync.getInstance().getConfig().getBoolean("format.use_embeds", false);
+		String messageFormat = VelocityMinecraftDiscordSync.getInstance().getConfig().getString("format.event_playerjoin", "%playername% Joined the Minecraft Server");
+		String pluginPrefix = VelocityMinecraftDiscordSync.getInstance().getConfig().getString("plugin.prefix", "MinecraftDiscordSync");
 		String message = messageFormat.replace("%pluginprefix%", pluginPrefix)
-				.replace("%playername%", ChatColor.stripColor(event.getPlayer().getDisplayName()));
+				.replace("%playername%", ChatColor.stripColorCodes(event.getPlayer().getUsername()));
 		
 		if(!useEmbed) {
 			chatChannel.sendMessage(message).queue();
@@ -79,10 +79,10 @@ public class PlayerEventListener implements Listener {
 		
 	}
 	
-	@EventHandler
-	public void onEvent(ServerDisconnectEvent event) {
+	@Subscribe
+	public void onEvent(DisconnectEvent event) {
 		if(event == null) return;
-		if(!BungeeMinecraftDiscordSync.getInstance().getConfig().getBoolean("plugin.enable_playerevents", false)) return;
+		if(!VelocityMinecraftDiscordSync.getInstance().getConfig().getBoolean("plugin.enable_playerevents", false)) return;
 		
 		TextChannel chatChannel = null;
 		try {
@@ -90,11 +90,11 @@ public class PlayerEventListener implements Listener {
 		} catch(Exception e) {}
 		if(chatChannel == null) return;
 		
-		boolean useEmbed = BungeeMinecraftDiscordSync.getInstance().getConfig().getBoolean("format.use_embeds", false);
-		String messageFormat = BungeeMinecraftDiscordSync.getInstance().getConfig().getString("format.event_playerquit", "%playername% Left the Minecraft Server");
-		String pluginPrefix = BungeeMinecraftDiscordSync.getInstance().getConfig().getString("plugin.prefix", "MinecraftDiscordSync");
+		boolean useEmbed = VelocityMinecraftDiscordSync.getInstance().getConfig().getBoolean("format.use_embeds", false);
+		String messageFormat = VelocityMinecraftDiscordSync.getInstance().getConfig().getString("format.event_playerquit", "%playername% Left the Minecraft Server");
+		String pluginPrefix = VelocityMinecraftDiscordSync.getInstance().getConfig().getString("plugin.prefix", "MinecraftDiscordSync");
 		String message = messageFormat.replace("%pluginprefix%", pluginPrefix)
-				.replace("%playername%", ChatColor.stripColor(event.getPlayer().getDisplayName()));
+				.replace("%playername%", ChatColor.stripColorCodes(event.getPlayer().getUsername()));
 	
 		if(!useEmbed) {
 			chatChannel.sendMessage(message).queue();
@@ -109,13 +109,13 @@ public class PlayerEventListener implements Listener {
 	
 	
 	private TextChannel getChannel() {
-		return BungeeMinecraftDiscordSync.getInstance().getPluginAPI().getDiscordBot().getJDA()
-				.getGuildById(BungeeMinecraftDiscordSync.getInstance().getConfig().getString("guild.id"))
-				.getTextChannelById(BungeeMinecraftDiscordSync.getInstance().getConfig().getString("guild.chatchannel_id"));
+		return VelocityMinecraftDiscordSync.getInstance().getPluginAPI().getDiscordBot().getJDA()
+				.getGuildById(VelocityMinecraftDiscordSync.getInstance().getConfig().getString("guild.id"))
+				.getTextChannelById(VelocityMinecraftDiscordSync.getInstance().getConfig().getString("guild.chatchannel_id"));
 	}
 	
 	private Color getColor(String colFor, String defaultColor) {
-		String hexString = BungeeMinecraftDiscordSync.getInstance().getConfig().getString("embed.colors." + colFor, defaultColor);
+		String hexString = VelocityMinecraftDiscordSync.getInstance().getConfig().getString("embed.colors." + colFor, defaultColor);
 		if(!hexString.startsWith("#")) hexString = "#" + hexString;
 		return hex2Rgb(hexString);
 	}
