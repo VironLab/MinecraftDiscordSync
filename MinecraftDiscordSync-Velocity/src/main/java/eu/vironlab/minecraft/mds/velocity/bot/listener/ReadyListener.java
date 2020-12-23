@@ -103,7 +103,7 @@ public class ReadyListener extends ListenerAdapter {
 							.replace("%online%", String.valueOf(VelocityServerUtil.getPlayerCount()))
 							.replace("%maxonline%", String.valueOf(VelocityServerUtil.getMaxPlayerCount()));
 					try {
-						if (channel.getName() != channelName)
+						if (!channel.getName().equals(channelName))
 							channel.getManager().setName(channelName).queue();
 					} catch (Exception e) {
 					}

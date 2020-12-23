@@ -104,7 +104,7 @@ public class ReadyListener extends ListenerAdapter {
 							.replace("%online%", String.valueOf(BukkitServerUtil.getPlayerCount()))
 							.replace("%maxonline%", String.valueOf(BukkitServerUtil.getMaxPlayerCount()));
 					try {
-						if (channel.getName() != channelName)
+						if (!channel.getName().equals(channelName))
 							channel.getManager().setName(channelName).queue();
 					} catch (Exception e) {
 					}

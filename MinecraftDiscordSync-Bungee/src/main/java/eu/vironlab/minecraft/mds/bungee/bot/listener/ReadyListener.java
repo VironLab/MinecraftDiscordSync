@@ -104,13 +104,13 @@ public class ReadyListener extends ListenerAdapter {
 							.replace("%online%", String.valueOf(BungeeServerUtil.getPlayerCount()))
 							.replace("%maxonline%", String.valueOf(BungeeServerUtil.getMaxPlayerCount()));
 					try {
-						if (channel.getName() != channelName)
+						if (!channel.getName().equals(channelName))
 							channel.getManager().setName(channelName).queue();
 					} catch (Exception e) {
 					}
 				}
 
-			}, 0, 3, TimeUnit.SECONDS);
+			}, 0, 3, TimeUnit.MINUTES);
 
 		}
 
