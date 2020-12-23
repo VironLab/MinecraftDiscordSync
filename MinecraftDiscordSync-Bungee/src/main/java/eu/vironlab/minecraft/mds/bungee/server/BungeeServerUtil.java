@@ -39,6 +39,7 @@ package eu.vironlab.minecraft.mds.bungee.server;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.config.ListenerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class BungeeServerUtil {
@@ -48,7 +49,12 @@ public class BungeeServerUtil {
 	}
 	
 	public static int getMaxPlayerCount() {
-		return ProxyServer.getInstance().getOnlineCount();
+		int maxplayers = 0;
+		// adds players for each active bungee listener 
+		for(ListenerInfo listener : ProxyServer.getInstance().getConfigurationAdapter().getListeners()) {
+		    maxplayers += listener.getMaxPlayers();
+		}
+		return maxplayers;
 	}
 	
 	public static String getPlayerList() {

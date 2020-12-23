@@ -51,7 +51,7 @@ public class VelocityServerUtil {
 	}
 	
 	public static int getMaxPlayerCount() {
-		return VelocityMinecraftDiscordSync.getInstance().getServer().getPlayerCount();
+		return VelocityMinecraftDiscordSync.getInstance().getServer().getConfiguration().getShowMaxPlayers();
 	}
 	
 	public static String getPlayerList() {
