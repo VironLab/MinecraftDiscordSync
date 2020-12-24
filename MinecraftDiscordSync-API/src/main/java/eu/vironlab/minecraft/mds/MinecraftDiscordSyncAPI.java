@@ -39,6 +39,7 @@ package eu.vironlab.minecraft.mds;
 
 import org.jetbrains.annotations.NotNull;
 
+import eu.vironlab.minecraft.mds.dependency.DependencyInjector;
 import eu.vironlab.minecraft.mds.discordbot.IDiscordBot;
 import eu.vironlab.minecraft.mds.discordbot.command.DiscordCommand;
 import eu.vironlab.minecraft.mds.discordbot.command.DiscordCommandMap;
@@ -48,6 +49,8 @@ import eu.vironlab.minecraft.mds.storage.IStorageProvider;
 import eu.vironlab.minecraft.mds.verification.IVerificationProvider;
 
 public class MinecraftDiscordSyncAPI implements IMinecraftDiscordSyncAPI {
+	
+	private DependencyInjector dependencyInjector;
 	
 	private static MinecraftDiscordSyncAPI api;
 	/**
@@ -141,5 +144,13 @@ public class MinecraftDiscordSyncAPI implements IMinecraftDiscordSyncAPI {
 		this.verificationProvider = verificationProvider;
 		return true;
 	}
-
+	
+	public void setDependencyInjector(DependencyInjector dependencyInjector) {
+		this.dependencyInjector = dependencyInjector;
+	}
+	
+	public DependencyInjector getDependencyInjector() {
+		return dependencyInjector;
+	}
+	
 }

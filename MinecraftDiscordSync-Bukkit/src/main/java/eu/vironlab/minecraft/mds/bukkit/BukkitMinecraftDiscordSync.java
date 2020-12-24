@@ -38,6 +38,7 @@
 package eu.vironlab.minecraft.mds.bukkit;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -65,6 +66,9 @@ import eu.vironlab.minecraft.mds.bukkit.permissions.LuckPermsPermissionHandler;
 import eu.vironlab.minecraft.mds.bukkit.permissions.VaultPermissionHandler;
 import eu.vironlab.minecraft.mds.bukkit.storage.YAMLStorage;
 import eu.vironlab.minecraft.mds.bukkit.verification.BukkitDiscordVerifier;
+import eu.vironlab.minecraft.mds.dependency.DependencyInjector;
+import eu.vironlab.minecraft.mds.dependency.clazzloader.IPluginClassLoader;
+import eu.vironlab.minecraft.mds.dependency.clazzloader.RefClassLoader;
 
 public class BukkitMinecraftDiscordSync extends JavaPlugin {
 	
@@ -72,6 +76,9 @@ public class BukkitMinecraftDiscordSync extends JavaPlugin {
 	public static BukkitMinecraftDiscordSync getInstance() {
 		return instance;
 	}
+	
+	private IPluginClassLoader classLoader;
+	private DependencyInjector dependencyInjector;
 	
 	private IMinecraftDiscordSyncAPI pluginAPI;
 	
@@ -104,6 +111,23 @@ public class BukkitMinecraftDiscordSync extends JavaPlugin {
 			}
 			this.saveDefaultConfig();
 		}
+		
+		File depPath = new File(this.getDataFolder(), "/libs/");
+		if(!depPath.exists())
+			depPath.mkdirs();
+		
+		classLoader = new RefClassLoader();
+		dependencyInjector = new DependencyInjector(depPath, classLoader);
+		
+		dependencyInjector.loadJDA();
+		
+		dependencyInjector.require("org.slf4j:slf4j-simple:1.6.4");
+		dependencyInjector.require("org.slf4j:slf4j-api:1.7.5");
+		
+		dependencyInjector.require("org.apache.commons:commons-lang3:3.11");
+		dependencyInjector.require("commons-io:commons-io:2.8.0");
+		
+		dependencyInjector.require("org.mongodb:mongo-java-driver:3.12.7");
 		
 		pluginMessages = new Messages();
 		pluginMessages.load(this.getDataFolder());
@@ -145,7 +169,10 @@ public class BukkitMinecraftDiscordSync extends JavaPlugin {
 			getLogger().warning(pluginMessages.translate("plugin.error.provider.permission"));
 		}
 		verificationProvider = new BukkitDiscordVerifier();
-		pluginAPI = new MinecraftDiscordSyncAPI(discordBot, verificationProvider, permissionProvider, storageProvider, pluginLogger);
+		
+		MinecraftDiscordSyncAPI api = new MinecraftDiscordSyncAPI(discordBot, verificationProvider, permissionProvider, storageProvider, pluginLogger);
+		api.setDependencyInjector(dependencyInjector);
+		pluginAPI = api;
 		
 		if(!discordBot.startBot()) {
 			this.getLogger().warning(pluginMessages.translate("plugin.bot.token_error"));

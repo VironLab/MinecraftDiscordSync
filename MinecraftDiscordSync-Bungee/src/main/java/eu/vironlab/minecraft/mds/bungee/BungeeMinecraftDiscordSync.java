@@ -56,6 +56,9 @@ import eu.vironlab.minecraft.mds.bungee.logging.PluginLogger;
 import eu.vironlab.minecraft.mds.bungee.permissions.LuckPermsPermissionHandler;
 import eu.vironlab.minecraft.mds.bungee.storage.YAMLStorage;
 import eu.vironlab.minecraft.mds.bungee.verification.BungeeDiscordVerifier;
+import eu.vironlab.minecraft.mds.dependency.DependencyInjector;
+import eu.vironlab.minecraft.mds.dependency.clazzloader.IPluginClassLoader;
+import eu.vironlab.minecraft.mds.dependency.clazzloader.RefClassLoader;
 import eu.vironlab.minecraft.mds.HeaderPrinter;
 import eu.vironlab.minecraft.mds.IMinecraftDiscordSyncAPI;
 import eu.vironlab.minecraft.mds.permissions.IPermissionProvider;
@@ -75,6 +78,9 @@ public class BungeeMinecraftDiscordSync extends Plugin {
 	public static BungeeMinecraftDiscordSync getInstance() {
 		return instance;
 	}
+	
+	private IPluginClassLoader classLoader;
+	private DependencyInjector dependencyInjector;
 	
 	private Configuration config;
 	
@@ -123,6 +129,23 @@ public class BungeeMinecraftDiscordSync extends Plugin {
 			this.saveDefaultConfig();
 		}
 		
+		File depPath = new File(this.getDataFolder(), "/libs/");
+		if(!depPath.exists())
+			depPath.mkdirs();
+		
+		classLoader = new RefClassLoader();
+		dependencyInjector = new DependencyInjector(depPath, classLoader);
+		
+		dependencyInjector.loadJDA();
+		
+		dependencyInjector.require("org.slf4j:slf4j-simple:1.6.4");
+		dependencyInjector.require("org.slf4j:slf4j-api:1.7.5");
+		
+		dependencyInjector.require("org.apache.commons:commons-lang3:3.11");
+		dependencyInjector.require("commons-io:commons-io:2.8.0");
+		
+		dependencyInjector.require("org.mongodb:mongo-java-driver:3.12.7");
+		
 		pluginMessages = new Messages();
 		pluginMessages.load(this.getDataFolder());
 		
@@ -160,7 +183,10 @@ public class BungeeMinecraftDiscordSync extends Plugin {
 			getLogger().warning(pluginMessages.translate("plugin.error.provider.permission"));
 		}
 		verificationProvider = new BungeeDiscordVerifier();
-		pluginAPI = new MinecraftDiscordSyncAPI(discordBot, verificationProvider, permissionProvider, storageProvider, pluginLogger);
+		
+		MinecraftDiscordSyncAPI api = new MinecraftDiscordSyncAPI(discordBot, verificationProvider, permissionProvider, storageProvider, pluginLogger);
+		api.setDependencyInjector(dependencyInjector);
+		pluginAPI = api;
 		
 		if(!discordBot.startBot()) {
 			this.getLogger().warning(pluginMessages.translate("plugin.bot.token_error"));

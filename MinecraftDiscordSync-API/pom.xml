@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>eu.vironlab.minecraft.mds</groupId>
 		<artifactId>MinecraftDiscordSync</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>MinecraftDiscordSync-API</artifactId>
 
@@ -68,8 +68,6 @@
 	</dependencies>
 
 	<build>
-		<defaultGoal>install</defaultGoal>
-		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

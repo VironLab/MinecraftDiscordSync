@@ -48,66 +48,84 @@ import eu.vironlab.minecraft.mds.storage.IStorageProvider;
 import eu.vironlab.minecraft.mds.verification.IVerificationProvider;
 
 public interface IMinecraftDiscordSyncAPI {
-	
+
 	/**
 	 * Get the plugin Logger instancea
+	 * 
 	 * @return pluginLogger
 	 */
 	public IPluginLogger getPluginLogger();
-	
+
 	/**
 	 * get the DiscordBot instance
+	 * 
 	 * @return discordBot
 	 */
 	public IDiscordBot getDiscordBot();
-	
+
 	/**
 	 * get the DiscordCommandMap
+	 * 
 	 * @return commandMap
 	 */
 	public DiscordCommandMap getDiscordCommandMap();
+
 	/**
 	 * Extend the DiscordBot Command Map with more DiscordCommands
+	 * 
 	 * @param commands
 	 * @return success
 	 */
-	public boolean extendDiscordCommandMap(DiscordCommand ... commands);
-	
+	public boolean extendDiscordCommandMap(DiscordCommand... commands);
+
 	/**
 	 * get the permission provider
+	 * 
 	 * @return permissionProvider
 	 */
 	public IPermissionProvider getPermissionProvider();
+
 	/**
 	 * set a own permission provider in the case youre using your own plugins.
+	 * 
 	 * @param permissionProvider
 	 * @return
 	 */
 	public boolean setPermissionProvider(@NotNull IPermissionProvider permissionProvider);
-	
+
 	/**
 	 * Get the storage provider wich manages the verified users storage
+	 * 
 	 * @return storageProvider
 	 */
 	public IStorageProvider getStorageProvider();
+
 	/**
-	 * set your own storage provider in case you dont want to use the default providers
+	 * set your own storage provider in case you dont want to use the default
+	 * providers
+	 * 
 	 * @param storageProvider
 	 * @return success
 	 */
 	public boolean setStorageProvider(@NotNull IStorageProvider storageProvider);
-	
+
 	/**
 	 * Get the verification provider wich manages verification
+	 * 
 	 * @return varificationProvider
 	 */
 	public IVerificationProvider getVerificationProvider();
+
 	/**
 	 * set a new verification provider
+	 * 
 	 * @param verificationProvider
 	 * @return success
 	 */
 	public boolean setVerificationProvider(@NotNull IVerificationProvider verificationProvider);
-	
-	
+
+	default public String identifyClassLoader(ClassLoader classLoader) throws Exception {
+		return null;
+	}
+
 }

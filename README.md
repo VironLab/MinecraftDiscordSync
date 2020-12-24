@@ -20,7 +20,10 @@ Minecraft Java:
   - [LuckPerms](https://www.spigotmc.org/resources/luckperms.28140/)
   - [Vault](https://www.spigotmc.org/resources/vault.34315/)
   
-- TODO: bungeecord support
+- BungeeCord Servers:
+  - [BungeeCord](https://ci.md-5.net/job/BungeeCord/) 
+- Default Supported Permission Plugins:
+  - [LuckPerms](https://www.spigotmc.org/resources/luckperms.28140/) [Download](https://ci.lucko.me/job/LuckPerms/1232/artifact/bungee/build/libs/LuckPerms-Bungee-5.2.67.jar)
 
 Minecraft Bedrock:
 - Nukkit Based Servers: 
@@ -31,7 +34,6 @@ Minecraft Bedrock:
   - [LuckPerms](https://cloudburstmc.org/resources/luckperms.51/)
   - [Multipass](https://cloudburstmc.org/resources/multipass.29/)
 
-- TODO: Waterdog support
 
 ---
 
@@ -100,9 +102,7 @@ void setNewProviderExample() {
 ---
 
 #### TODOS:
-- TODO: bungeecord support
 - TODO: velocity support
-- TODO: Waterdog/Waterfall support
 - :)
 - TODO: SQL Storage provider support
 - TODO: SQLite Storage provider support
@@ -124,7 +124,7 @@ void setNewProviderExample() {
 <dependency>
 	<groupId>eu.vironlab.minecraft.mds</groupId>
 	<artifactId>MinecraftDiscordSync-API</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 </dependency>
 
 ```
@@ -140,7 +140,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'eu.vironlab.minecraft.mds:MinecraftDiscordSync-API:1.0.0-SNAPSHOT'
+    compileOnly 'eu.vironlab.minecraft.mds:MinecraftDiscordSync-API:1.0.1-SNAPSHOT'
 }
 
 
