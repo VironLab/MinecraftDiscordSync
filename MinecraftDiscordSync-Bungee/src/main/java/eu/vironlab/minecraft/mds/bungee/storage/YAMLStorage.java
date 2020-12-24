@@ -39,7 +39,10 @@ package eu.vironlab.minecraft.mds.bungee.storage;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.UUID;
+
+import org.apache.commons.io.IOUtils;
 
 import eu.vironlab.minecraft.mds.storage.IStorageProvider;
 import eu.vironlab.minecraft.mds.verification.VerifiedUser;
@@ -59,6 +62,12 @@ public class YAMLStorage implements IStorageProvider {
 
 	public YAMLStorage(Plugin plugin) {
 		configFile = new File(plugin.getDataFolder(), "storage.yml");
+		if (!configFile.exists()) {
+			try {
+				Files.copy(IOUtils.toInputStream("#internal storage", "UTF-8"), configFile.toPath());
+			} catch (Exception e) {
+			}
+        }
 		try {
 			config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(configFile);
 		} catch (IOException e) {
