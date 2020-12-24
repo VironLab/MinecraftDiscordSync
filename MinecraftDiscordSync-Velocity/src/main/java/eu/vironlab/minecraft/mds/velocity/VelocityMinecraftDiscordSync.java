@@ -241,7 +241,7 @@ public class VelocityMinecraftDiscordSync {
 	private void saveDefaultConfig() {
 		File file = new File(getDataFolder(), "config.yml");
 		if (!file.exists()) {
-			try (InputStream in = getClass().getResourceAsStream("config.yml")) {
+			try (InputStream in = getClass().getResourceAsStream("/config.yml")) {
 				Files.copy(in, file.toPath());
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -250,6 +250,7 @@ public class VelocityMinecraftDiscordSync {
 	}
 
 	private void saveResource(String resourcePath, boolean overwrite) {
+		if(!resourcePath.startsWith("/")) resourcePath = "/" + resourcePath;
 		File file = new File(getDataFolder(), resourcePath);
 		if (!file.exists() || overwrite) {
 			try (InputStream in = getClass().getResourceAsStream(resourcePath)) {
