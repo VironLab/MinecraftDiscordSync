@@ -56,10 +56,11 @@ public class YAMLStorage implements IStorageProvider {
 
 	public YAMLStorage(VelocityMinecraftDiscordSync plugin) {
 		configFile = new File(plugin.getDataFolder(), "storage.yml");
-		if(!configFile.exists()) {
-			configFile.mkdir();
-		}
 		config = new Config(configFile);
+		if (!config.exists(collectionRoot)) {
+			config.set(collectionRoot + ".storage", true);
+			config.save();
+		}
 	}
 
 	@Override

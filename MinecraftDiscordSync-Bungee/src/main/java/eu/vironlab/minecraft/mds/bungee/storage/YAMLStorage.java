@@ -59,12 +59,16 @@ public class YAMLStorage implements IStorageProvider {
 
 	public YAMLStorage(Plugin plugin) {
 		configFile = new File(plugin.getDataFolder(), "storage.yml");
-		if(!configFile.exists()) {
-			configFile.mkdir();
-		}
 		try {
 			config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(configFile);
 		} catch (IOException e) {
+		}
+		if (!config.contains(collectionRoot)) {
+			config.set(collectionRoot + ".storage", true);
+			try {
+				ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, configFile);
+			} catch (Exception e) {
+			}
 		}
 	}
 
