@@ -101,7 +101,7 @@ guild: # ( guild = Discord Server )
 
 
 onlinecounter:
-  enabled: false # should the onlone counter be enabled
+  enabled: false # should the online counter be enabled
   counterchannel: 'CounterChannel ID' # paste the id of the channel for the OnlineCounter here.
   # this is the title of the online counter channel. Placeholders: 
   # - %online%  - will be replaced with the online player count
