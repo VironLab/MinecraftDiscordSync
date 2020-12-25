@@ -35,12 +35,27 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds;
+package eu.vironlab.minecraft.mds.sponge.permissions;
 
-public abstract class HeaderPrinter {
-	String version = "1.0.1-SNAPSHOT";
-	public abstract void printHeader();
-	public String getVersion() {
-		return version;
+import java.util.UUID;
+
+import eu.vironlab.minecraft.mds.permissions.IPermissionProvider;
+import net.luckperms.api.LuckPermsProvider;
+
+public class LuckPermsPermissionHandler implements IPermissionProvider {
+	
+	public LuckPermsPermissionHandler() throws ClassNotFoundException {
+		Class.forName("net.luckperms.api.LuckPermsProvider");
 	}
+
+	@Override
+	public String getPrimaryPlayerGroupName(UUID uuid) {
+		return LuckPermsProvider.get().getUserManager().getUser(uuid).getPrimaryGroup();
+	}
+
+	@Override
+	public String getPrimaryPlayerGroupName(String name) {
+		return LuckPermsProvider.get().getUserManager().getUser(name).getPrimaryGroup();
+	}
+
 }

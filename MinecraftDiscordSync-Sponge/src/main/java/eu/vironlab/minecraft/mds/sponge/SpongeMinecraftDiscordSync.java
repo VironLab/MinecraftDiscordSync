@@ -35,7 +35,7 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds.velocity;
+package eu.vironlab.minecraft.mds.sponge;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -44,16 +44,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
+import org.spongepowered.api.Server;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.text.Text;
 
 import com.google.inject.Inject;
-import com.velocitypowered.api.command.CommandMeta;
-import com.velocitypowered.api.plugin.Plugin;
-import com.velocitypowered.api.plugin.annotation.DataDirectory;
-import com.velocitypowered.api.proxy.ProxyServer;
 
 import eu.vironlab.minecraft.mds.MinecraftDiscordSyncAPI;
 import eu.vironlab.minecraft.mds.PluginConstants;
@@ -63,31 +65,32 @@ import eu.vironlab.minecraft.mds.dependency.clazzloader.RefClassLoader;
 import eu.vironlab.minecraft.mds.HeaderPrinter;
 import eu.vironlab.minecraft.mds.IMinecraftDiscordSyncAPI;
 import eu.vironlab.minecraft.mds.permissions.IPermissionProvider;
+import eu.vironlab.minecraft.mds.sponge.bot.DiscordSyncBot;
+import eu.vironlab.minecraft.mds.sponge.commands.*;
+import eu.vironlab.minecraft.mds.sponge.configuration.Config;
+import eu.vironlab.minecraft.mds.sponge.listener.*;
+import eu.vironlab.minecraft.mds.sponge.logging.PluginLogger;
+import eu.vironlab.minecraft.mds.sponge.permissions.LuckPermsPermissionHandler;
+import eu.vironlab.minecraft.mds.sponge.storage.YAMLStorage;
+import eu.vironlab.minecraft.mds.sponge.verification.SpongeDiscordVerifier;
 import eu.vironlab.minecraft.mds.storage.IStorageProvider;
 import eu.vironlab.minecraft.mds.storage.MongoDBStorage;
-import eu.vironlab.minecraft.mds.velocity.bot.DiscordSyncBot;
-import eu.vironlab.minecraft.mds.velocity.configuration.Config;
-import eu.vironlab.minecraft.mds.velocity.commands.*;
-import eu.vironlab.minecraft.mds.velocity.listener.*;
-import eu.vironlab.minecraft.mds.velocity.logging.PluginLogger;
-import eu.vironlab.minecraft.mds.velocity.permissions.LuckPermsPermissionHandler;
-import eu.vironlab.minecraft.mds.velocity.storage.YAMLStorage;
-import eu.vironlab.minecraft.mds.velocity.verification.VelocityDiscordVerifier;
 import eu.vironlab.minecraft.mds.verification.IVerificationProvider;
-import net.kyori.text.serializer.legacy.LegacyComponentSerializer;
 
-@Plugin(id = "vmcds", name = "VelocityMinecraftDiscordSyncPlugin", version = "1.0.1-SNAPSHOT", authors = {
+@Plugin(id = "smcdcs", name = "SpongeMinecraftDiscordSyncPlugin", version = "1.0.1-SNAPSHOT", authors = {
 		"VironLab" }, url = "https://vironlab.eu")
-public class VelocityMinecraftDiscordSync {
+public class SpongeMinecraftDiscordSync {
 	
 	public static boolean enabled = true;
+	
+	private Server server;
 
-	private ProxyServer server;
+	@Inject
 	private Logger logger;
 
-	private static VelocityMinecraftDiscordSync instance;
+	private static SpongeMinecraftDiscordSync instance;
 
-	public static VelocityMinecraftDiscordSync getInstance() {
+	public static SpongeMinecraftDiscordSync getInstance() {
 		return instance;
 	}
 	
@@ -108,17 +111,12 @@ public class VelocityMinecraftDiscordSync {
 	private File dataFolder;
 
 	private Config config;
-
-	@Inject
-	public VelocityMinecraftDiscordSync(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
-		this.server = server;
-		this.logger = logger;
-		this.dataFolder = dataDirectory.toFile();
-		if (!dataFolder.exists())
-			dataFolder.mkdirs();
+	
+	@Listener
+    public void onServerStart(GameStartedServerEvent event) {
 		onLoad();
 		onEnable();
-	}
+    }
 
 	public void onLoad() {
 		this.logHeader();
@@ -126,6 +124,10 @@ public class VelocityMinecraftDiscordSync {
 	}
 
 	public void onEnable() {
+		dataFolder = new File("mods/smcdcs");
+		if(!dataFolder.exists())
+			dataFolder.mkdirs();
+		
 		this.saveDefaultConfig();
 		this.saveResource("messages.ini", false);
 
@@ -192,7 +194,7 @@ public class VelocityMinecraftDiscordSync {
 		} catch (Exception e) {
 			getLogger().warn(pluginMessages.translate("plugin.error.provider.permission"));
 		}
-		verificationProvider = new VelocityDiscordVerifier();
+		verificationProvider = new SpongeDiscordVerifier();
 		
 		MinecraftDiscordSyncAPI api = new MinecraftDiscordSyncAPI(discordBot, verificationProvider, permissionProvider, storageProvider, pluginLogger);
 		api.setDependencyInjector(dependencyInjector);
@@ -212,32 +214,42 @@ public class VelocityMinecraftDiscordSync {
 
 	private void registerCommands() {
 
-		CommandMeta meta1 = getServer().getCommandManager().metaBuilder("discordinfo").aliases("dcinfo").build();
-		CommandMeta meta2 = getServer().getCommandManager().metaBuilder("discord").build();
-		CommandMeta meta3 = getServer().getCommandManager().metaBuilder("verify").build();
+		CommandSpec meta1 = CommandSpec.builder()
+			    .description(Text.of("Hello World Command"))
+			    .permission("mcdcs.command.discordinfo")
+			    .executor(new DiscordServerInfoCommand())
+			    .build();
 		
+		CommandSpec meta2 = CommandSpec.builder()
+			    .description(Text.of("Hello World Command"))
+			    .permission("mcdcs.command.discord")
+			    .executor(new DiscordCommand())
+			    .build();
+		
+		CommandSpec meta3 = CommandSpec.builder()
+			    .description(Text.of("Hello World Command"))
+			    .permission("mcdcs.command.verify")
+			    .executor(new VerifyCommand())
+			    .build();
+
 		if (this.getConfig().getBoolean("plugin.commands_enabled.ingame.discordinfo", false)) {
-			getServer().getCommandManager().register(meta1, new DiscordServerInfoCommand());
+			Sponge.getCommandManager().register(this, meta1, "discordinfo", "dcinfo");
 		}
 		if (this.getConfig().getBoolean("plugin.commands_enabled.ingame.discord", false))
-			getServer().getCommandManager().register(meta2, new DiscordCommand());
+			Sponge.getCommandManager().register(this, meta2, "discord");
 		if (this.getConfig().getBoolean("plugin.commands_enabled.ingame.verify", false) && permissionProvider != null
 				&& storageProvider != null)
-			getServer().getCommandManager().register(meta3, new VerifyCommand());
+			Sponge.getCommandManager().register(this, meta3, "verify");
 	}
 
 	private void registerEvents() {
-		getServer().getEventManager().register(new ChatEventListener(), this);
+		Sponge.getEventManager().registerListeners(this, new ChatEventListener());
 		if (this.getConfig().getBoolean("plugin.enable_playerevents", false))
-			getServer().getEventManager().register(new PlayerEventListener(), this);
+			Sponge.getEventManager().registerListeners(this, new PlayerEventListener());
+		
 	}
 
 	private void disablePlugin() {
-	    server.getEventManager().unregisterListeners(this);
-	    server.getCommandManager().unregister("discordinfo");
-	    server.getCommandManager().unregister("dcinfo");
-	    server.getCommandManager().unregister("discord");
-	    server.getCommandManager().unregister("verify");
 	    this.discordBot.interrupt();
 	    enabled = false;
 	    MinecraftDiscordSyncAPI.get().setVerificationProvider(null);
@@ -288,8 +300,7 @@ public class VelocityMinecraftDiscordSync {
 					BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 					String input;
 					while ((input = bufferedReader.readLine()) != null)
-						getLogger().info(LegacyComponentSerializer.legacy().serialize(LegacyComponentSerializer.legacy()
-								.deserialize(input.replace("%version%", this.getVersion()), '&')));
+						getLogger().info(ChatColor.translateAlternateColorCodes('&', input.replace("%version%", this.getVersion())));
 					bufferedReader.close();
 				} catch (Exception e) {
 				}
@@ -301,7 +312,7 @@ public class VelocityMinecraftDiscordSync {
 		return logger;
 	}
 
-	public ProxyServer getServer() {
+	public Server getServer() {
 		return server;
 	}
 

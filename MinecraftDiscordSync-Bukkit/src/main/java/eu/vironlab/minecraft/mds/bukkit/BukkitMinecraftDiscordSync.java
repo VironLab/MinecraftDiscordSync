@@ -228,7 +228,7 @@ public class BukkitMinecraftDiscordSync extends JavaPlugin {
 		            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 		            String input;
 		            while ((input = bufferedReader.readLine()) != null)
-		                getServer().getLogger().info(ChatColor.translateAlternateColorCodes((char)'&', input.replace("%version%", "1.0.0-SNAPSHOT")));
+		                getServer().getLogger().info(ChatColor.translateAlternateColorCodes((char)'&', input.replace("%version%", this.getVersion())));
 		            bufferedReader.close();
 		        } catch(Exception e) {
 		        }

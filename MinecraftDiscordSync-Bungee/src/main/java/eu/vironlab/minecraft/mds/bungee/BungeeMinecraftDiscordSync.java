@@ -269,7 +269,7 @@ public class BungeeMinecraftDiscordSync extends Plugin {
 		            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 		            String input;
 		            while ((input = bufferedReader.readLine()) != null)
-		                getProxy().getLogger().info(ChatColor.translateAlternateColorCodes((char)'&', input.replace("%version%", "1.0.0-SNAPSHOT")));
+		                getProxy().getLogger().info(ChatColor.translateAlternateColorCodes((char)'&', input.replace("%version%", this.getVersion())));
 		            bufferedReader.close();
 		        } catch(Exception e) {
 		        }

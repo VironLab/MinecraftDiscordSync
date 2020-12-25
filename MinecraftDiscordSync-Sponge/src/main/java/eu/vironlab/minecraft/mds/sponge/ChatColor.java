@@ -35,12 +35,64 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds;
+package eu.vironlab.minecraft.mds.sponge;
 
-public abstract class HeaderPrinter {
-	String version = "1.0.1-SNAPSHOT";
-	public abstract void printHeader();
-	public String getVersion() {
-		return version;
+public enum ChatColor {
+    DEFAULT("default", 'r'),
+    BLACK("black", '0'),
+    DARK_BLUE("dark_blue", '1'),
+    GREEN("green", '2'),
+    CYAN("cyan", '3'),
+    DARK_RED("dark_red", '4'),
+    PURPLE("purple", '5'),
+    ORANGE("orange", '6'),
+    GRAY("gray", '7'),
+    DARK_GRAY("dark_gray", '8'),
+    BLUE("blue", '9'),
+    LIGHT_GREEN("light_green", 'a'),
+    AQUA("aqua", 'b'),
+    RED("red", 'c'),
+    PINK("pink", 'd'),
+    YELLOW("yellow", 'e'),
+    WHITE("white", 'f');
+
+    private final String name;
+    private final char index;
+
+    ChatColor(String name, char index) {
+        this.name = name;
+        this.index = index;
+    }
+    
+    public static String translateAlternateColorCodes(char c, String text) {
+        if (text == null) {
+        	return null;
+        }
+        for (ChatColor consoleColor : values()) {
+        	text = text.replace("" + c + consoleColor.index, "§" + consoleColor.index);
+        }
+        return text;
+    }
+
+    public static String stripColorCodes(String text) {
+        if (text == null) {
+        	return null;
+        }
+
+        for (ChatColor consoleColor : values()) {
+            text = text.replace("&" + consoleColor.index, "");
+            text = text.replace("§" + consoleColor.index, "");
+        }
+
+        return text;
+    }
+    
+    public String getName() {
+		return name;
 	}
+    
+    public char getIndex() {
+		return index;
+	}
+
 }

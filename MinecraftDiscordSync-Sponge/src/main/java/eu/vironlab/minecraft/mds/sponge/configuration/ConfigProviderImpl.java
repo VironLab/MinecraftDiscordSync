@@ -35,12 +35,90 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds;
+package eu.vironlab.minecraft.mds.sponge.configuration;
 
-public abstract class HeaderPrinter {
-	String version = "1.0.1-SNAPSHOT";
-	public abstract void printHeader();
-	public String getVersion() {
-		return version;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import eu.vironlab.minecraft.mds.configuration.AbstractPluginConfigurationProvider;
+
+public class ConfigProviderImpl extends AbstractPluginConfigurationProvider {
+	
+	private Config config;
+
+	public ConfigProviderImpl(File configurationFile) {
+		super(configurationFile);
+		if(!getConfigurationFile().exists()) {
+			getConfigurationFile().mkdir();
+		}
+		config = new Config(configurationFile);
 	}
+
+	@Override
+	public String getString(String key) {
+		return config.getString(key);
+	}
+
+	@Override
+	public int getInteger(String key) {
+		return config.getInt(key, 0);
+	}
+
+	@Override
+	public long getLong(String key) {
+		return config.getLong(key);
+	}
+
+	@Override
+	public float getFloat(String key) {
+		return 0;
+	}
+
+	@Override
+	public boolean getBoolean(String key) {
+		return config.getBoolean(key, false);
+	}
+
+	@Override
+	public List<String> getStringList(String key) {
+		return config.getStringList(key);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Integer> getIntegerList(String key) {
+		return (ArrayList<Integer>) config.getList(key, new ArrayList<Integer>());
+	}
+
+	@Override
+	public boolean load() {
+		try {
+			config.reload();
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean save() {
+		try {
+			config.save();
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean reload() {
+		try {
+			config.reload();
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
 }

@@ -35,12 +35,30 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds;
+package eu.vironlab.minecraft.mds.sponge.bot.commands;
 
-public abstract class HeaderPrinter {
-	String version = "1.0.1-SNAPSHOT";
-	public abstract void printHeader();
-	public String getVersion() {
-		return version;
+import eu.vironlab.minecraft.mds.discordbot.command.CommandData;
+import eu.vironlab.minecraft.mds.discordbot.command.DiscordCommand;
+import eu.vironlab.minecraft.mds.sponge.SpongeMinecraftDiscordSync;
+import eu.vironlab.minecraft.mds.sponge.server.SpongeServerUtil;
+import net.dv8tion.jda.api.EmbedBuilder;
+
+public class OnlineCommand extends DiscordCommand {
+
+	public OnlineCommand() {
+		super("online");
+		setDescription("Counts the online players at the connected minecraft server");
 	}
+
+	@Override
+	public boolean execute(CommandData data) {
+		if(!SpongeMinecraftDiscordSync.enabled) return true;
+		EmbedBuilder embedBuilder = new EmbedBuilder();
+		embedBuilder.setTitle(SpongeMinecraftDiscordSync.getInstance().getPluginMessages().translate("command.discord.online.title", String.valueOf(SpongeServerUtil.getPlayerCount()), String.valueOf(SpongeServerUtil.getMaxPlayerCount())));
+		embedBuilder.setColor(0x00ff00);
+		embedBuilder.setFooter("Copyright © 2020 » vironlab.eu");
+		data.reply(embedBuilder.build());
+		return false;
+	}
+
 }

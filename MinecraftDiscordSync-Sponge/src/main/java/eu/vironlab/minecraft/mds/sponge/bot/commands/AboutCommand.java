@@ -35,12 +35,32 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds;
+package eu.vironlab.minecraft.mds.sponge.bot.commands;
 
-public abstract class HeaderPrinter {
-	String version = "1.0.1-SNAPSHOT";
-	public abstract void printHeader();
-	public String getVersion() {
-		return version;
+import java.awt.Color;
+
+import eu.vironlab.minecraft.mds.PluginConstants;
+import eu.vironlab.minecraft.mds.discordbot.command.CommandData;
+import eu.vironlab.minecraft.mds.discordbot.command.DiscordCommand;
+import net.dv8tion.jda.api.EmbedBuilder;
+
+public class AboutCommand extends DiscordCommand {
+
+	public AboutCommand() {
+		super("about");
 	}
+
+	@Override
+	public boolean execute(CommandData data) {
+		EmbedBuilder embedBuilder = new EmbedBuilder();
+		embedBuilder.setTitle(PluginConstants.PLUGIN_NAME, PluginConstants.GITHUB_PROJECT_URL);
+		embedBuilder.setAuthor(PluginConstants.AUTHOR_NAME, PluginConstants.LOGO_ICON_URL);
+		embedBuilder.setDescription("The Minecraft Discord Sync Plugin allows you to Sync your Minecraft and Discord Server.\nVisit: [Our Website](" + PluginConstants.WEBSITE_URL + ") [Project Repo](" + PluginConstants.GITHUB_PROJECT_URL + ")");
+		embedBuilder.setThumbnail(PluginConstants.LOGO_ICON_PHOENIX_URL);
+		embedBuilder.setColor(new Color(0x00ee00));
+		embedBuilder.setFooter("Copyright © 2020 » vironlab.eu");
+		data.reply(embedBuilder.build());
+		return false;
+	}
+
 }

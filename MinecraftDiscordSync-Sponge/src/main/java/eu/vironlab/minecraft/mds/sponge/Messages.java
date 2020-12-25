@@ -35,12 +35,31 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds;
+package eu.vironlab.minecraft.mds.sponge;
 
-public abstract class HeaderPrinter {
-	String version = "1.0.1-SNAPSHOT";
-	public abstract void printHeader();
-	public String getVersion() {
-		return version;
+import eu.vironlab.minecraft.mds.MessageProvider;
+
+public class Messages extends MessageProvider {
+
+	@Override
+	public String translate(String str, Object... params) {
+		String baseText = get(str);
+		baseText = parseMessage(baseText != null ? baseText : str);
+		for (int i = 0; i < params.length; i++) {
+			baseText = baseText.replace("{%" + i + "}", parseMessage(String.valueOf(params[i])));
+		}
+		return ChatColor.translateAlternateColorCodes((char)'&', baseText);
 	}
+
+	@Override
+	public String translate(String str, String... params) {
+		String baseText = get(str);
+		baseText = parseMessage(baseText != null ? baseText : str);
+		for (int i = 0; i < params.length; i++) {
+			baseText = baseText.replace("{%" + i + "}", parseMessage(params[i]));
+		}
+		return ChatColor.translateAlternateColorCodes((char)'&', baseText);
+	}
+
+	
 }

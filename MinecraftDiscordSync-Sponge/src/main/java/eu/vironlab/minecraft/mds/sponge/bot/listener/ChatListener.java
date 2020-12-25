@@ -35,12 +35,33 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds;
+package eu.vironlab.minecraft.mds.sponge.bot.listener;
 
-public abstract class HeaderPrinter {
-	String version = "1.0.1-SNAPSHOT";
-	public abstract void printHeader();
-	public String getVersion() {
-		return version;
+import eu.vironlab.minecraft.mds.sponge.SpongeMinecraftDiscordSync;
+import eu.vironlab.minecraft.mds.sponge.server.SpongeServerUtil;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+public class ChatListener extends ListenerAdapter {
+	
+	@Override
+	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+		if(event.getAuthor().isBot()) return;
+		if(!SpongeMinecraftDiscordSync.enabled) return;
+		if(!SpongeMinecraftDiscordSync.getInstance().getConfig().getBoolean("chatsync.discord_to_ingame", false)) return;
+		
+		String message = event.getMessage().getContentRaw();
+		if(message == null || message == "") return;
+		
+		String messageFormat = SpongeMinecraftDiscordSync.getInstance().getConfig().getString("format.ingamechat", "[%pluginprefix%] » %playername% » %message%");
+		String pluginPrefix = SpongeMinecraftDiscordSync.getInstance().getConfig().getString("plugin.prefix", "MinecraftDiscordSync");
+		String messageToSend = messageFormat.replace("%pluginprefix%", pluginPrefix)
+				.replace("%playername%", event.getAuthor().getName())
+				.replace("%message%", message);
+		
+		SpongeServerUtil.broadcastMessage(messageToSend);
+		
+		super.onGuildMessageReceived(event);
 	}
+
 }

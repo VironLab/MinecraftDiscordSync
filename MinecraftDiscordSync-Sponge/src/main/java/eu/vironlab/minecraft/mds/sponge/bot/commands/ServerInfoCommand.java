@@ -35,12 +35,24 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds;
+package eu.vironlab.minecraft.mds.sponge.bot.commands;
 
-public abstract class HeaderPrinter {
-	String version = "1.0.1-SNAPSHOT";
-	public abstract void printHeader();
-	public String getVersion() {
-		return version;
+import eu.vironlab.minecraft.mds.discordbot.command.CommandData;
+import eu.vironlab.minecraft.mds.discordbot.command.DiscordCommand;
+import eu.vironlab.minecraft.mds.sponge.SpongeMinecraftDiscordSync;
+
+public class ServerInfoCommand extends DiscordCommand {
+
+	public ServerInfoCommand() {
+		super("serverinfo");
+		setDescription("Sends some additional serverinfos about the connected minecraft server");
 	}
+
+	@Override
+	public boolean execute(CommandData data) {
+		if(!SpongeMinecraftDiscordSync.enabled) return true;
+		data.reply("Not implemented yet.");
+		return false;
+	}
+
 }

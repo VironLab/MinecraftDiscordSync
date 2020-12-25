@@ -35,12 +35,44 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds;
+package eu.vironlab.minecraft.mds.sponge.bot;
 
-public abstract class HeaderPrinter {
-	String version = "1.0.1-SNAPSHOT";
-	public abstract void printHeader();
-	public String getVersion() {
-		return version;
+import java.util.ArrayList;
+import java.util.List;
+
+import eu.vironlab.minecraft.mds.discordbot.DiscordBot;
+import eu.vironlab.minecraft.mds.discordbot.command.DiscordCommand;
+import eu.vironlab.minecraft.mds.logging.IPluginLogger;
+import eu.vironlab.minecraft.mds.sponge.SpongeMinecraftDiscordSync;
+import eu.vironlab.minecraft.mds.sponge.bot.commands.*;
+import eu.vironlab.minecraft.mds.sponge.bot.listener.*;
+
+public class DiscordSyncBot extends DiscordBot {
+
+	public DiscordSyncBot(IPluginLogger pluginLogger, String token, String commandPrefix) {
+		super(pluginLogger, token, commandPrefix);
+		
+		List<DiscordCommand> defaultCommands = new ArrayList<DiscordCommand>();
+		
+		defaultCommands.add(new AboutCommand());
+		
+		if(SpongeMinecraftDiscordSync.getInstance().getConfig().getBoolean("plugin.commands_enabled.discord.online", false))
+			defaultCommands.add(new OnlineCommand());
+		if(SpongeMinecraftDiscordSync.getInstance().getConfig().getBoolean("plugin.commands_enabled.discord.playerlist", false))
+			defaultCommands.add(new PlayerListCommand());
+		if(SpongeMinecraftDiscordSync.getInstance().getConfig().getBoolean("plugin.commands_enabled.discord.serverinfo", false))
+			defaultCommands.add(new ServerInfoCommand());	
+		if(SpongeMinecraftDiscordSync.getInstance().getConfig().getBoolean("plugin.commands_enabled.discord.verify", false))
+			defaultCommands.add(new VerifyCommand());
+		
+		defaultCommands.forEach(command -> {
+			addCommand(command);
+		});
+		
+		addListenerBeforeStart(new ReadyListener());
+		addListenerBeforeStart(new GuildMemberListener());
+		addListenerBeforeStart(new ChatListener());
+		
 	}
+
 }

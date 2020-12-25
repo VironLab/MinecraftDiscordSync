@@ -57,8 +57,8 @@ discord_invitelink: 'https://discord.gg/wvcX92VyEH'
 
 # bot specific settings
 bot: 
-  token: 'paste token here' # paste the token received from the discord developer portal here.
-  prefix: '/' # this is the command prefix for your new bot.
+  token: 'paste token here' # paste the token received from the discord developer portal here.            !!!IMPORTANT/REQUIRED!!!
+  prefix: '/' # this is the command prefix for your new bot.                                              !!!IMPORTANT/REQUIRED!!!
   activity:
     type: 'WATCHING' # available: PLAYING / LISTENING / STREAMING / WATCHING
     message: 'https://vironlab.eu' # this is the message displayed in the game status.
@@ -96,12 +96,12 @@ chatsync:
   discord_to_ingame: true # should the discord messages be sent in ingamechat
     
 guild: # ( guild = Discord Server ) 
-  id: 'guild to sync ID' # paste yor guildID here ( you can copy it by enabling the developer mode in discord )
-  chatchannel_id: 'ChatChannel ID' # paste the id of the channel for the crosschat here.
+  id: 'guild to sync ID' # paste yor guildID here ( you can copy it by enabling the developer mode in discord ) !!!IMPORTANT/REQUIRED!!!
+  chatchannel_id: 'ChatChannel ID' # paste the id of the channel for the crosschat here.                        !!!IMPORTANT/REQUIRED!!!
 
 
 onlinecounter:
-  enabled: false # should the onlone counter be enabled
+  enabled: false # should the online counter be enabled
   counterchannel: 'CounterChannel ID' # paste the id of the channel for the OnlineCounter here.
   # this is the title of the online counter channel. Placeholders: 
   # - %online%  - will be replaced with the online player count

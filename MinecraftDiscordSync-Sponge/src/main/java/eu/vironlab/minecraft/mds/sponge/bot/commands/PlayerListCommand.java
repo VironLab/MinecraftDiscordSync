@@ -35,12 +35,34 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds;
+package eu.vironlab.minecraft.mds.sponge.bot.commands;
 
-public abstract class HeaderPrinter {
-	String version = "1.0.1-SNAPSHOT";
-	public abstract void printHeader();
-	public String getVersion() {
-		return version;
+import eu.vironlab.minecraft.mds.discordbot.command.CommandData;
+import eu.vironlab.minecraft.mds.discordbot.command.DiscordCommand;
+import eu.vironlab.minecraft.mds.sponge.SpongeMinecraftDiscordSync;
+import eu.vironlab.minecraft.mds.sponge.server.SpongeServerUtil;
+import net.dv8tion.jda.api.EmbedBuilder;
+
+public class PlayerListCommand extends DiscordCommand {
+
+	public PlayerListCommand() {
+		super("playerlist");
+		setDescription("Shows the online players at the connected minecraft server");
 	}
+
+	@Override
+	public boolean execute(CommandData data) {
+		if(!SpongeMinecraftDiscordSync.enabled) return true;
+		EmbedBuilder embedBuilder = new EmbedBuilder();
+		embedBuilder.setTitle(SpongeMinecraftDiscordSync.getInstance().getPluginMessages().translate("command.discord.playerlist.title", String.valueOf(SpongeServerUtil.getPlayerCount()), String.valueOf(SpongeServerUtil.getMaxPlayerCount())));
+		embedBuilder.setColor(0x00ff00);
+		String pl = SpongeServerUtil.getPlayerList();
+		if(pl == "") pl = SpongeMinecraftDiscordSync.getInstance().getPluginMessages().translate("command.discord.playerlist.noplayers");
+		if(pl.length() > 1980) pl = pl.substring(0, 1979) + "...";
+		embedBuilder.setDescription("```markdown\n%pl%\n```".replace("%pl%", pl));
+		embedBuilder.setFooter("Copyright © 2020 » vironlab.eu");
+		data.reply(embedBuilder.build());
+		return false;
+	}
+
 }

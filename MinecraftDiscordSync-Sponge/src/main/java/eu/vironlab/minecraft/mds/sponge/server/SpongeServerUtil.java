@@ -35,12 +35,37 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds;
+package eu.vironlab.minecraft.mds.sponge.server;
 
-public abstract class HeaderPrinter {
-	String version = "1.0.1-SNAPSHOT";
-	public abstract void printHeader();
-	public String getVersion() {
-		return version;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+
+import eu.vironlab.minecraft.mds.sponge.ChatColor;
+import eu.vironlab.minecraft.mds.sponge.SpongeMinecraftDiscordSync;
+
+public class SpongeServerUtil {
+	
+	public static int getPlayerCount() {
+		return SpongeMinecraftDiscordSync.getInstance().getServer().getOnlinePlayers().size();
 	}
+	
+	public static int getMaxPlayerCount() {
+		return SpongeMinecraftDiscordSync.getInstance().getServer().getMaxPlayers();
+	}
+	
+	public static String getPlayerList() {
+		StringBuilder stringBuilder = new StringBuilder();
+		for(Player player : SpongeMinecraftDiscordSync.getInstance().getServer().getOnlinePlayers()) {
+			stringBuilder.append("+" + player.getName() + "\n");
+		}
+		return stringBuilder.length() == 0 ? "" : stringBuilder.toString();	
+	}
+	
+	public static boolean broadcastMessage(String message) {
+		for(Player player : SpongeMinecraftDiscordSync.getInstance().getServer().getOnlinePlayers()) {
+			player.sendMessage(Text.of(ChatColor.translateAlternateColorCodes('&', message)));
+		}
+		return true;
+	}
+
 }

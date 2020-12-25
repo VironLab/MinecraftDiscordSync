@@ -35,12 +35,26 @@
  *   
  */
 
-package eu.vironlab.minecraft.mds;
+package eu.vironlab.minecraft.mds.sponge.commands;
 
-public abstract class HeaderPrinter {
-	String version = "1.0.1-SNAPSHOT";
-	public abstract void printHeader();
-	public String getVersion() {
-		return version;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.text.Text;
+
+import eu.vironlab.minecraft.mds.PluginConstants;
+import eu.vironlab.minecraft.mds.sponge.SpongeMinecraftDiscordSync;
+
+public class DiscordCommand implements CommandExecutor {
+	
+	@Override
+	public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
+		if(!source.hasPermission("mcdcs.command.discord")) return CommandResult.empty();
+		source.sendMessage(Text.of(SpongeMinecraftDiscordSync.getInstance().getConfig().getString("discord_invitelink", PluginConstants.SUPPORT_DISCORD_INVITELINK)));
+		return CommandResult.success();
 	}
+	
 }
+

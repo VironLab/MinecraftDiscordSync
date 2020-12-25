@@ -38,7 +38,7 @@
 name: MinecraftDiscordSyncPlugin
 main: eu.vironlab.minecraft.mds.nukkit.NukkitMinecraftDiscordSync
 author: VironLab
-version: 1.0.0-SNAPSHOT
+version: 1.0.1-SNAPSHOT
 api: ["1.0.9"]
 description: Sync Discord and Minecraftservers
 website: https://vironlab.eu/
