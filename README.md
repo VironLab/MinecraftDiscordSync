@@ -16,19 +16,33 @@ Minecraft Java:
   - [Spigot](https://getbukkit.org/download/spigot)  API: 1.15 ++
   - [PaperMC](https://papermc.io/downloads)  API: 1.15 ++
   
+  
 - Default Supported Permission Plugins:
   - [LuckPerms](https://www.spigotmc.org/resources/luckperms.28140/)
   - [Vault](https://www.spigotmc.org/resources/vault.34315/)
   
+---  
+  
 - BungeeCord Servers:
   - [BungeeCord](https://ci.md-5.net/job/BungeeCord/) 
+  
 - Default Supported Permission Plugins:
   - [LuckPerms](https://www.spigotmc.org/resources/luckperms.28140/) [Download](https://ci.lucko.me/job/LuckPerms/1232/artifact/bungee/build/libs/LuckPerms-Bungee-5.2.67.jar)
+  
+  
+- Velocity Support:
+  - [Velocity](https://velocitypowered.com/) 
+  
+- Default Supported Permission Plugins:
+  - [LuckPerms](https://www.spigotmc.org/resources/luckperms.28140/) [Download](https://ci.lucko.me/job/LuckPerms/1232/artifact/velocity/build/libs/LuckPerms-Velocity-5.2.67.jar)
+
+---
 
 Minecraft Bedrock:
 - Nukkit Based Servers: 
   - [Nukkit](https://github.com/CloudburstMC/Nukkit)  API: 1.0.9 ++
   - [PowerNukkit ( untested )](https://github.com/PowerNukkit/PowerNukkit)
+
 
 - Default Supported Permission Plugins:
   - [LuckPerms](https://cloudburstmc.org/resources/luckperms.51/)
@@ -102,8 +116,6 @@ void setNewProviderExample() {
 ---
 
 #### TODOS:
-- TODO: velocity support
-- :)
 - TODO: SQL Storage provider support
 - TODO: SQLite Storage provider support
 - :)
