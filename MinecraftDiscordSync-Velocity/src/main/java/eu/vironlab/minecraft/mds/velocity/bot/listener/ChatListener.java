@@ -47,6 +47,7 @@ public class ChatListener extends ListenerAdapter {
 	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		if(event.getAuthor().isBot()) return;
+		if(!VelocityMinecraftDiscordSync.enabled) return;
 		if(!VelocityMinecraftDiscordSync.getInstance().getConfig().getBoolean("chatsync.discord_to_ingame", false)) return;
 		
 		String message = event.getMessage().getContentRaw();

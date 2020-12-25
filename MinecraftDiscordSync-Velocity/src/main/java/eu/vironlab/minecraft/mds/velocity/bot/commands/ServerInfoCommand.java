@@ -39,6 +39,7 @@ package eu.vironlab.minecraft.mds.velocity.bot.commands;
 
 import eu.vironlab.minecraft.mds.discordbot.command.CommandData;
 import eu.vironlab.minecraft.mds.discordbot.command.DiscordCommand;
+import eu.vironlab.minecraft.mds.velocity.VelocityMinecraftDiscordSync;
 
 public class ServerInfoCommand extends DiscordCommand {
 
@@ -49,6 +50,7 @@ public class ServerInfoCommand extends DiscordCommand {
 
 	@Override
 	public boolean execute(CommandData data) {
+		if(!VelocityMinecraftDiscordSync.enabled) return true;
 		data.reply("Not implemented yet.");
 		return false;
 	}

@@ -53,6 +53,7 @@ public class ChatEventListener {
 	@Subscribe
 	public void onChat(PlayerChatEvent event) {
 		if(event == null) return;
+		if(!VelocityMinecraftDiscordSync.enabled) return;
 		if(!VelocityMinecraftDiscordSync.getInstance().getConfig().getBoolean("chatsync.ingame_to_discord", false)) return;
 		
 		Player player = event.getPlayer();

@@ -56,6 +56,7 @@ public class VerifyCommand extends DiscordCommand {
 
 	@Override
 	public boolean execute(CommandData data) {
+		if(!VelocityMinecraftDiscordSync.enabled) return true;
 		
 		if(data.getArgs().size() < 1) {
 			data.reply(VelocityMinecraftDiscordSync.getInstance().getPluginMessages().translate("command.discord.verify.missingcode"));

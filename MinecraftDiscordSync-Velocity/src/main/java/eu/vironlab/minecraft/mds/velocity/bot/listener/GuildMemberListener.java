@@ -48,6 +48,7 @@ public class GuildMemberListener extends ListenerAdapter {
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event) {
 		if(event == null) return;
+		if(!VelocityMinecraftDiscordSync.enabled) return;
 		if(!VelocityMinecraftDiscordSync.getInstance().getConfig().getBoolean("plugin.enable_discord_memberevents", false)) return;
 		
 		String guildId =  VelocityMinecraftDiscordSync.getInstance().getConfig().getString("guild.id", "123456789");
@@ -67,6 +68,7 @@ public class GuildMemberListener extends ListenerAdapter {
 	@Override
 	public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
 		if(event == null) return;
+		if(!VelocityMinecraftDiscordSync.enabled) return;
 		if(!VelocityMinecraftDiscordSync.getInstance().getConfig().getBoolean("plugin.enable_discord_memberevents", false)) return;
 		
 		String guildId =  VelocityMinecraftDiscordSync.getInstance().getConfig().getString("guild.id", "123456789");

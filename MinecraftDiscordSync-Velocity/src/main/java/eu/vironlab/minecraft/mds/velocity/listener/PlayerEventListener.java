@@ -53,6 +53,7 @@ public class PlayerEventListener {
 	@Subscribe
 	public void onEvent(LoginEvent event) {
 		if(event == null) return;
+		if(!VelocityMinecraftDiscordSync.enabled) return;
 		if(!VelocityMinecraftDiscordSync.getInstance().getConfig().getBoolean("plugin.enable_playerevents", false)) return;
 		
 		TextChannel chatChannel = null;
@@ -82,6 +83,7 @@ public class PlayerEventListener {
 	@Subscribe
 	public void onEvent(DisconnectEvent event) {
 		if(event == null) return;
+		if(!VelocityMinecraftDiscordSync.enabled) return;
 		if(!VelocityMinecraftDiscordSync.getInstance().getConfig().getBoolean("plugin.enable_playerevents", false)) return;
 		
 		TextChannel chatChannel = null;

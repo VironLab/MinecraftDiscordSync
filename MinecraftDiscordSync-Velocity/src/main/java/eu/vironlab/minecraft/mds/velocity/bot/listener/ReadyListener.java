@@ -92,6 +92,7 @@ public class ReadyListener extends ListenerAdapter {
 
 		if (VelocityMinecraftDiscordSync.getInstance().getConfig().getBoolean("onlinecounter.enabled", false)) {
 			VelocityMinecraftDiscordSync.getInstance().getServer().getScheduler().buildTask(VelocityMinecraftDiscordSync.getInstance(), () -> {
+				if(!VelocityMinecraftDiscordSync.enabled) return;
 				VoiceChannel channel = VelocityMinecraftDiscordSync.getInstance().getPluginAPI().getDiscordBot().getJDA()
 						.getGuildById(VelocityMinecraftDiscordSync.getInstance().getConfig().getString("guild.id", ""))
 						.getVoiceChannelById(VelocityMinecraftDiscordSync.getInstance().getConfig()

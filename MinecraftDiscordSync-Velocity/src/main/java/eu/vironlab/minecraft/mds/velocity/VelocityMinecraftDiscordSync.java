@@ -79,6 +79,8 @@ import net.kyori.text.serializer.legacy.LegacyComponentSerializer;
 @Plugin(id = "vmcds", name = "VelocityMinecraftDiscordSyncPlugin", version = "1.0.0-SNAPSHOT", authors = {
 		"VironLab" }, url = "https://vironlab.eu")
 public class VelocityMinecraftDiscordSync {
+	
+	public static boolean enabled = true;
 
 	private ProxyServer server;
 	private Logger logger;
@@ -116,7 +118,6 @@ public class VelocityMinecraftDiscordSync {
 			dataFolder.mkdirs();
 		onLoad();
 		onEnable();
-		onDisable();
 	}
 
 	public void onLoad() {
@@ -199,7 +200,7 @@ public class VelocityMinecraftDiscordSync {
 
 		if (!discordBot.startBot()) {
 			this.getLogger().warn(pluginMessages.translate("plugin.bot.token_error"));
-			System.exit(0);
+			disablePlugin();
 			return;
 		}
 
@@ -231,11 +232,19 @@ public class VelocityMinecraftDiscordSync {
 			getServer().getEventManager().register(new PlayerEventListener(), this);
 	}
 
-	public void onDisable() {
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			this.discordBot.interrupt();
-			this.getLogger().info(pluginMessages.translate("plugin.disabled"));
-		}));
+	private void disablePlugin() {
+	    server.getEventManager().unregisterListeners(this);
+	    server.getCommandManager().unregister("discordinfo");
+	    server.getCommandManager().unregister("dcinfo");
+	    server.getCommandManager().unregister("discord");
+	    server.getCommandManager().unregister("verify");
+	    this.discordBot.interrupt();
+	    enabled = false;
+	    MinecraftDiscordSyncAPI.get().setVerificationProvider(null);
+	    MinecraftDiscordSyncAPI.get().setPermissionProvider(null);
+	    MinecraftDiscordSyncAPI.get().setStorageProvider(null);
+	    MinecraftDiscordSyncAPI.get().setDependencyInjector(null);
+		this.getLogger().info(pluginMessages.translate("plugin.disabled"));
 	}
 
 	private void saveDefaultConfig() {

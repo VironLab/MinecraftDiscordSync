@@ -52,6 +52,7 @@ public class PlayerListCommand extends DiscordCommand {
 
 	@Override
 	public boolean execute(CommandData data) {
+		if(!VelocityMinecraftDiscordSync.enabled) return true;
 		EmbedBuilder embedBuilder = new EmbedBuilder();
 		embedBuilder.setTitle(VelocityMinecraftDiscordSync.getInstance().getPluginMessages().translate("command.discord.playerlist.title", String.valueOf(VelocityServerUtil.getPlayerCount()), String.valueOf(VelocityServerUtil.getMaxPlayerCount())));
 		embedBuilder.setColor(0x00ff00);
