@@ -164,7 +164,7 @@ public class VelocityMinecraftDiscordSync {
 
 		discordBot = new DiscordSyncBot(pluginLogger, this.getConfig().getString("bot.token", "NaN"),
 				this.getConfig().getString("bot.prefix"));
-		switch (this.getConfig().getString("plugin.prividers.storage_provider", "yaml").toLowerCase()) {
+		switch (this.getConfig().getString("plugin.providers.storage_provider", "yaml").toLowerCase()) {
 		case "mongodb":
 			storageProvider = new MongoDBStorage();
 			try {
@@ -184,7 +184,7 @@ public class VelocityMinecraftDiscordSync {
 		}
 
 		try {
-			switch (this.getConfig().getString("plugin.prividers.permission_provider", "luckperms").toLowerCase()) {
+			switch (this.getConfig().getString("plugin.providers.permission_provider", "luckperms").toLowerCase()) {
 			default:
 				permissionProvider = new LuckPermsPermissionHandler();
 				break;
