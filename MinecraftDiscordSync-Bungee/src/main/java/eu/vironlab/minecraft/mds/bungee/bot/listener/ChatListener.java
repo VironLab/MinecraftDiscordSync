@@ -48,6 +48,7 @@ public class ChatListener extends ListenerAdapter {
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		if(event.getAuthor().isBot()) return;
 		if(!BungeeMinecraftDiscordSync.getInstance().getConfig().getBoolean("chatsync.discord_to_ingame", false)) return;
+		if(BungeeMinecraftDiscordSync.getInstance().getConfig().getString("guild.chatchannel_id", "123") != event.getChannel().getId()) return;
 		
 		String message = event.getMessage().getContentRaw();
 		if(message == null || message == "") return;
